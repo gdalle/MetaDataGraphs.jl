@@ -1,6 +1,8 @@
 using DataGraphs
+using Documenter
 using Test
 
 @testset "DataGraphs.jl" begin
-    # Write your tests here.
+    doctest(DataGraphs)
+    include("manipulation.jl")
 end
