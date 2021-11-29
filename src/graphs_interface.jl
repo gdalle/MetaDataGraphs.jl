@@ -22,22 +22,46 @@ function Base.zero(::DataGraph{T,G,VL,VD,ED}) where {T,G,VL,VD,ED}
     return DataGraph(G(); VL=VL, VD=VD, ED=ED)
 end
 
-## Link between graph codes and metagraph labels
+## Add vertices and edges
 
-get_vertex(g::DataGraph, label) = g.vertices[label]
-get_label(g::DataGraph, v) = g.labels[v]
-
-Base.getindex(g::DataGraph{T,G,VL}, label::VL) where {T,G,VL} = get_vertex(g, label)
-Base.haskey(g::DataGraph{T,G,VL}, label::VL) where {T,G,VL} = haskey(g.vertices, label)
-
-## Define unique order for edges in undirected graphs
-
-function order(g::DataGraph, s::Integer, d::Integer)
-    if is_directed(g)
-        return s, d
-    else
-        return min(s, d), max(s, d)
+function Graphs.add_vertex!(g::DataGraph{T,G,VL}, label::VL, data) where {T,G,VL}
+    added = add_vertex!(g.graph)
+    if added
+        push!(g.labels, label)
+        push!(g.vertex_data, data)
+        g.vertices[label] = nv(g)
     end
+    return added
+end
+
+function Graphs.add_edge!(g::DataGraph, s::Integer, d::Integer, data)
+    added = add_edge!(g.graph, s, d)
+    if added
+        g.edge_data[order(g, s, d)] = data
+    end
+    return added
+end
+
+function Graphs.add_edge!(
+    g::DataGraph{T,G,VL}, label_s::VL, label_d::VL, data
+) where {T,G,VL}
+    s, d = get_vertex(g, label_s), get_vertex(g, label_d)
+    return add_edge!(g, s, d, data)
+end
+
+## Remove edges
+
+function Graphs.rem_edge!(g::DataGraph, s::Integer, d::Integer)
+    removed = rem_edge!(g.graph, s, d)
+    if removed
+        delete!(g.edge_data, order(g, s, d))
+    end
+    return removed
+end
+
+function Graphs.rem_edge!(g::DataGraph{T,G,VL}, label_s::VL, label_d::VL) where {T,G,VL}
+    s, d = get_vertex(g, label_s), get_vertex(g, label_d)
+    return remove_edge!(g, s, d)
 end
 
 ## Get vertex and edge data
@@ -83,46 +107,4 @@ end
 function set_data!(g::DataGraph{T,G,VL}, label_s::VL, label_d::VL, data) where {T,G,VL}
     s, d = get_vertex(g, label_s), get_vertex(g, label_d)
     return set_data!(g, s, d, data)
-end
-
-## Add vertices and edges
-
-function Graphs.add_vertex!(g::DataGraph{T,G,VL}, label::VL, data) where {T,G,VL}
-    added = add_vertex!(g.graph)
-    if added
-        push!(g.labels, label)
-        push!(g.vertex_data, data)
-        g.vertices[label] = nv(g)
-    end
-    return added
-end
-
-function Graphs.add_edge!(g::DataGraph, s::Integer, d::Integer, data)
-    added = add_edge!(g.graph, s, d)
-    if added
-        g.edge_data[order(g, s, d)] = data
-    end
-    return added
-end
-
-function Graphs.add_edge!(
-    g::DataGraph{T,G,VL}, label_s::VL, label_d::VL, data
-) where {T,G,VL}
-    s, d = get_vertex(g, label_s), get_vertex(g, label_d)
-    return add_edge!(g, s, d, data)
-end
-
-## Remove edges
-
-function Graphs.rem_edge!(g::DataGraph, s::Integer, d::Integer)
-    removed = rem_edge!(g.graph, s, d)
-    if removed
-        delete!(g.edge_data, order(g, s, d))
-    end
-    return removed
-end
-
-function Graphs.rem_edge!(g::DataGraph{T,G,VL}, label_s::VL, label_d::VL) where {T,G,VL}
-    s, d = get_vertex(g, label_s), get_vertex(g, label_d)
-    return remove_edge!(g, s, d)
 end

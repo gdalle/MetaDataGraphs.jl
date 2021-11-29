@@ -4,5 +4,5 @@ using Test
 
 @testset "DataGraphs.jl" begin
     doctest(DataGraphs)
-    include("manipulation.jl")
+    include("datagraph.jl")
 end
