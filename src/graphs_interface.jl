@@ -66,6 +66,7 @@ end
 
 ## Get vertex and edge data
 
+get_data(g::DataGraph) = g.graph_data
 get_data(g::DataGraph, v::Integer) = g.vertex_data[v]
 get_data(g::DataGraph, s::Integer, d::Integer) = g.edge_data[order(g, s, d)]
 
