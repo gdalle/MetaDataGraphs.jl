@@ -16,7 +16,7 @@ Graphs.inneighbors(g::DataGraph, v::Integer) = inneighbors(g.graph, v)
 Graphs.outneighbors(g::DataGraph, v::Integer) = outneighbors(g.graph, v)
 
 Graphs.is_directed(g::DataGraph) = is_directed(g.graph)
-Graphs.is_directed(::Type{DataGraph{T,G}}) where {T,G} = is_directed(G)
+Graphs.is_directed(::Type{<:DataGraph{T,G}}) where {T,G} = is_directed(G)
 
 function Base.zero(::DataGraph{T,G,VL,VD,ED}) where {T,G,VL,VD,ED}
     return DataGraph(G(); VL=VL, VD=VD, ED=ED)
