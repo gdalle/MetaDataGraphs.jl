@@ -119,12 +119,12 @@ function Graphs.reverse(g::DataGraph)
     rev_edge_data = Dict((d, s) => deepcopy(data) for ((s, d), data) in g.edge_data)
     rev_graph_data = deepcopy(g.graph_data)
     rev_g = DataGraph(;
-        rev_graph=rev_graph,
-        rev_labels=rev_labels,
-        rev_vertices=rev_vertices,
-        rev_vertex_data=rev_vertex_data,
-        rev_edge_data=rev_edge_data,
-        rev_graph_data=rev_graph_data,
+        graph=rev_graph,
+        labels=rev_labels,
+        vertices=rev_vertices,
+        vertex_data=rev_vertex_data,
+        edge_data=rev_edge_data,
+        graph_data=rev_graph_data,
     )
     return rev_g
 end
