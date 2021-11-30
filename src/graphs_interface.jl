@@ -113,11 +113,11 @@ end
 
 function Graphs.reverse(g::DataGraph)
     rev_graph = reverse(g.graph)
-    rev_labels = copy(g.labels)
-    rev_vertices = copy(g.vertices)
-    rev_vertex_data = copy(g.vertex_data)
-    rev_edge_data = Dict((d, s) => data for ((s, d), data) in g.edge_data)
-    rev_graph_data = copy(g.graph_data)
+    rev_labels = deepcopy(g.labels)
+    rev_vertices = deepcopy(g.vertices)
+    rev_vertex_data = deepcopy(g.vertex_data)
+    rev_edge_data = Dict((d, s) => deepcopy(data) for ((s, d), data) in g.edge_data)
+    rev_graph_data = deepcopy(g.graph_data)
     rev_g = MetaGraph(;
         rev_graph=rev_graph,
         rev_labels=rev_labels,
