@@ -1,5 +1,5 @@
 """
-    DataGraph{T<:Integer,G<:AbstractGraph{T},VL,VD,ED} <: AbstractGraph{T}
+    DataGraph{T<:Integer,G<:AbstractGraph{T},VL,VD,ED,GD} <: AbstractGraph{T}
 
 Structure for graphs with metadata.
 
