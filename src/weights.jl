@@ -1,8 +1,10 @@
-function Graphs.weights(g::DataGraph{T,G,VL,VD,ED}) where {T,G,VL,VD,ED<:Nothing}
+function Graphs.weights(
+    g::AbstractDataGraph{T,VL,VD,ED,GD}
+) where {T,G,VL,VD,ED<:Nothing,GD}
     return Graphs.DefaultDistance(nv(g))
 end
 
-function Graphs.weights(g::DataGraph{T,G,VL,VD,ED}) where {T,G,VL,VD,ED<:Real}
+function Graphs.weights(g::AbstractDataGraph{T,VL,VD,ED,GD}) where {T,VL,VD,ED<:Real,GD}
     n = nv(g)
     I, J, V = Int[], Int[], ED[]
     for edge in edges(g)
