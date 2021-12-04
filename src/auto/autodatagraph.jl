@@ -24,6 +24,7 @@ end
 function AutoDataGraph(
     graph::AbstractGraph{T}; VL, VD=Nothing, ED=Nothing, graph_data=nothing
 ) where {T}
+    @assert nv(graph) == 0
     if VL <: Integer
         error("Using integers as vertex labels for a DataGraph is not allowed.")
     else
