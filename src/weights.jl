@@ -10,7 +10,7 @@ end
 
 function get_edgeweight(
     g::AbstractDataGraph{T,VL,VD,ED}, s::Integer, d::Integer
-) where {T,VL,VD,ED<:NamedTuple}
+) where {T,VL,VD,ED}
     return get_data(g, s, d).weight
 end
 
