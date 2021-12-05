@@ -57,6 +57,13 @@ function test_graph(g)
     @test add_vertex!(g, :Rome, (0.0, 0.0))
     @test set_data!(g, :Rome, (41.9028, 12.4964))
     @test get_data(g, :Rome) == (41.9028, 12.4964)
+
+    if is_directed(g)
+        h = reverse(g)
+        @test !has_edge(h, h[:Paris], h[:Lyon])
+        @test has_edge(h, h[:Lyon], h[:Paris])
+        @test get_data(h, h[:Lyon], h[:Paris]) == get_data(g, g[:Paris], g[:Lyon])
+    end
 end
 
 @testset "Dict storage" begin
