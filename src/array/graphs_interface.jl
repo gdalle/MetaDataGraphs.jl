@@ -71,5 +71,25 @@ end
 ## Other utilities
 
 function Graphs.reverse(g::ArrayDataDiGraph)
-    error("Not implemented")
+    rev_ne = g.ne
+    rev_fadjlist = deepcopy(g.badjlist)
+    rev_badjlist = deepcopy(g.fadjlist)
+    rev_labels = deepcopy(g.labels)
+    rev_vertices = deepcopy(g.vertices)
+    rev_vertex_data = deepcopy(g.vertex_data)
+    rev_edge_data = [
+        [deepcopy(g.edge_data[s][d]) for s in inneighbors(g, d)] for d in vertices(g)
+    ]
+    rev_graph_data = deepcopy(g.graph_data)
+    rev_g = ArrayDataDiGraph(;
+        rev_ne=rev_ne,
+        rev_fadjlist=rev_fadjlist,
+        rev_badjlist=rev_badjlist,
+        labels=rev_labels,
+        vertices=rev_vertices,
+        vertex_data=rev_vertex_data,
+        edge_data=rev_edge_data,
+        graph_data=rev_graph_data,
+    )
+    return rev_g
 end
