@@ -19,10 +19,10 @@ end
 
 @testset "Benchmark" begin
     for n in [100, 500], d in [2, 4, 8, 16]
-        g1 = AutoDataGraph(
+        g1 = DictDataGraph(
             DiGraph(); VL=Tuple{Int,Int}, VD=Nothing, ED=@NamedTuple{weight::Float64, open::Bool}
         )
-        g2 = ManualDataDiGraph{Int}(
+        g2 = ArrayDataDiGraph{Int}(
             VL=Tuple{Int,Int}, VD=Nothing, ED=@NamedTuple{weight::Float64, open::Bool}
         )
         fill_square!(g1, n, d)

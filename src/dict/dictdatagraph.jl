@@ -1,5 +1,5 @@
 """
-    AutoDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <: AbstractDataGraph{T}
+    DictDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <: AbstractDataGraph{T}
 
 Structure for graphs with metadata based on an underlying dataless graph.
 
@@ -11,7 +11,7 @@ Structure for graphs with metadata based on an underlying dataless graph.
 - `edge_data::Dict{Tuple{T,T},ED}`: list of edge data objects, indexed by integer tuples `(s,d)`
 - `graph_data::GD`: single graph data object
 """
-Base.@kwdef mutable struct AutoDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
+Base.@kwdef mutable struct DictDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
                            AbstractDataGraph{T,VL,VD,ED,GD}
     graph::G
     labels::Vector{VL}
@@ -21,14 +21,14 @@ Base.@kwdef mutable struct AutoDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
     graph_data::GD
 end
 
-function AutoDataGraph(
+function DictDataGraph(
     graph::AbstractGraph{T}; VL, VD=Nothing, ED=Nothing, graph_data=nothing
 ) where {T}
     @assert nv(graph) == 0
     if VL <: Integer
         error("Using integers as vertex labels for a DataGraph is not allowed.")
     else
-        return AutoDataGraph(;
+        return DictDataGraph(;
             graph=graph,
             labels=VL[],
             vertices=Dict{VL,T}(),
@@ -41,15 +41,15 @@ end
 
 ## Link between vertices and labels
 
-get_vertex(g::AutoDataGraph{T,G,VL}, label::VL) where {T,G,VL} = g.vertices[label]
-get_label(g::AutoDataGraph, v::Integer) = g.labels[v]
+get_vertex(g::DictDataGraph{T,G,VL}, label::VL) where {T,G,VL} = g.vertices[label]
+get_label(g::DictDataGraph, v::Integer) = g.labels[v]
 
-Base.haskey(g::AutoDataGraph{T,G,VL}, label::VL) where {T,G,VL} = haskey(g.vertices, label)
-Base.getindex(g::AutoDataGraph{T,G,VL}, label::VL) where {T,G,VL} = get_vertex(g, label)
+Base.haskey(g::DictDataGraph{T,G,VL}, label::VL) where {T,G,VL} = haskey(g.vertices, label)
+Base.getindex(g::DictDataGraph{T,G,VL}, label::VL) where {T,G,VL} = get_vertex(g, label)
 
 ## Define unique order for edges in undirected graphs
 
-function order(g::AutoDataGraph, s::Integer, d::Integer)
+function order(g::DictDataGraph, s::Integer, d::Integer)
     if is_directed(g)
         return s, d
     else

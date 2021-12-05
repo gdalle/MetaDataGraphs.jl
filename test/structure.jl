@@ -59,13 +59,13 @@ function test_graph(g)
     @test get_data(g, :Rome) == (41.9028, 12.4964)
 end
 
-@testset "Auto" begin
-    g1 = AutoDataGraph(Graph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+@testset "Dict storage" begin
+    g1 = DictDataGraph(Graph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g1)
-    g2 = AutoDataGraph(DiGraph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+    g2 = DictDataGraph(DiGraph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g2)
 end
-@testset "Manual" begin
-    g3 = ManualDataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+@testset "Array storage" begin
+    g3 = ArrayDataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g3)
 end

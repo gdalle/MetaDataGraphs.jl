@@ -1,5 +1,5 @@
 """
-    ManualDataDiGraph{T,VL,VD,ED,GD} <: AbstractDataGraph{T}
+    ArrayDataDiGraph{T,VL,VD,ED,GD} <: AbstractDataGraph{T}
 
 Structure for graphs with metadata based on adjacency list storage.
 
@@ -13,7 +13,7 @@ Structure for graphs with metadata based on adjacency list storage.
 - `edge_data::Vector{Vector{ED}}`: list of edge data objects, indexed by `s` first and `d_index` second, where `d_index` is the rank of `d` among the outneighbors of `s`
 - `graph_data::GD`: single graph data object
 """
-Base.@kwdef mutable struct ManualDataDiGraph{T<:Integer,VL,VD,ED,GD} <:
+Base.@kwdef mutable struct ArrayDataDiGraph{T<:Integer,VL,VD,ED,GD} <:
                            AbstractDataGraph{T,VL,VD,ED,GD}
     ne::Int
     fadjlist::Vector{Vector{T}}
@@ -25,11 +25,11 @@ Base.@kwdef mutable struct ManualDataDiGraph{T<:Integer,VL,VD,ED,GD} <:
     graph_data::GD
 end
 
-function ManualDataDiGraph{T}(; VL, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
+function ArrayDataDiGraph{T}(; VL, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
     if VL <: Integer
         error("Using integers as vertex labels for a DataGraph is not allowed.")
     else
-        return ManualDataDiGraph(;
+        return ArrayDataDiGraph(;
             ne=0,
             fadjlist=Vector{T}[],
             badjlist=Vector{T}[],
@@ -44,8 +44,8 @@ end
 
 ## Link between vertices and labels
 
-get_vertex(g::ManualDataDiGraph{T,VL}, label::VL) where {T,VL} = g.vertices[label]
-get_label(g::ManualDataDiGraph, v::Integer) = g.labels[v]
+get_vertex(g::ArrayDataDiGraph{T,VL}, label::VL) where {T,VL} = g.vertices[label]
+get_label(g::ArrayDataDiGraph, v::Integer) = g.labels[v]
 
-Base.haskey(g::ManualDataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)
-Base.getindex(g::ManualDataDiGraph{T,VL}, label::VL) where {T,VL} = get_vertex(g, label)
+Base.haskey(g::ArrayDataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)
+Base.getindex(g::ArrayDataDiGraph{T,VL}, label::VL) where {T,VL} = get_vertex(g, label)

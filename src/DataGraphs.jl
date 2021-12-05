@@ -5,19 +5,19 @@ using SparseArrays
 using Reexport
 @reexport using Graphs
 
-export AbstractDataGraph, AutoDataGraph, ManualDataDiGraph
+export AbstractDataGraph, DictDataGraph, ArrayDataDiGraph
 export get_vertex, get_label
 export get_data, set_data!
 
 include("abstractdatagraph.jl")
 
-include("auto/autodatagraph.jl")
-include("auto/graphs_interface.jl")
-include("auto/data.jl")
+include("dict/dictdatagraph.jl")
+include("dict/graphs_interface.jl")
+include("dict/data.jl")
 
-include("manual/manualdatagraph.jl")
-include("manual/graphs_interface.jl")
-include("manual/data.jl")
+include("array/arraydatadigraph.jl")
+include("array/graphs_interface.jl")
+include("array/data.jl")
 
 include("labels.jl")
 include("weights.jl")

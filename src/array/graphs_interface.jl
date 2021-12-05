@@ -1,37 +1,37 @@
 ## Basic Graphs.jl functions
 
-Graphs.edgetype(g::ManualDataDiGraph{T}) where {T} = Edge{T}
+Graphs.edgetype(g::ArrayDataDiGraph{T}) where {T} = Edge{T}
 
-Graphs.nv(g::ManualDataDiGraph) = length(g.fadjlist)
-Graphs.ne(g::ManualDataDiGraph) = g.ne
+Graphs.nv(g::ArrayDataDiGraph) = length(g.fadjlist)
+Graphs.ne(g::ArrayDataDiGraph) = g.ne
 
-Graphs.vertices(g::ManualDataDiGraph) = 1:nv(g)
+Graphs.vertices(g::ArrayDataDiGraph) = 1:nv(g)
 
-function Graphs.edges(g::ManualDataDiGraph)
+function Graphs.edges(g::ArrayDataDiGraph)
     # TODO: avoid allocations with iterator
     return collect(Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
 end
 
-Graphs.has_vertex(g::ManualDataDiGraph, v::Integer) = v in vertices(g)
+Graphs.has_vertex(g::ArrayDataDiGraph, v::Integer) = v in vertices(g)
 
-function Graphs.has_edge(g::ManualDataDiGraph, s::Integer, d::Integer)
+function Graphs.has_edge(g::ArrayDataDiGraph, s::Integer, d::Integer)
     return (has_vertex(g, s) && has_vertex(g, d) && insorted(d, outneighbors(g, s)))
 end
 
-Graphs.inneighbors(g::ManualDataDiGraph, v::Integer) = g.badjlist[v]
-Graphs.outneighbors(g::ManualDataDiGraph, v::Integer) = g.fadjlist[v]
+Graphs.inneighbors(g::ArrayDataDiGraph, v::Integer) = g.badjlist[v]
+Graphs.outneighbors(g::ArrayDataDiGraph, v::Integer) = g.fadjlist[v]
 
-Graphs.is_directed(g::ManualDataDiGraph) = true
-Graphs.is_directed(::Type{<:ManualDataDiGraph}) = true
+Graphs.is_directed(g::ArrayDataDiGraph) = true
+Graphs.is_directed(::Type{<:ArrayDataDiGraph}) = true
 
-function Base.zero(g::ManualDataDiGraph{T,VL,VD,ED}) where {T,VL,VD,ED}
-    return ManualDataDiGraph{T}(; VL=VL, VD=VD, ED=ED, graph_data=get_data(g))
+function Base.zero(g::ArrayDataDiGraph{T,VL,VD,ED}) where {T,VL,VD,ED}
+    return ArrayDataDiGraph{T}(; VL=VL, VD=VD, ED=ED, graph_data=get_data(g))
 end
 
 ## Add vertices and edges
 
 function Graphs.add_vertex!(
-    g::ManualDataDiGraph{T,VL,VD,ED}, label::VL, data::VD
+    g::ArrayDataDiGraph{T,VL,VD,ED}, label::VL, data::VD
 ) where {T,VL,VD,ED}
     if haskey(g, label)
         return false
@@ -47,7 +47,7 @@ function Graphs.add_vertex!(
 end
 
 function Graphs.add_edge!(
-    g::ManualDataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
+    g::ArrayDataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
 ) where {T,VL,VD,ED}
     if !has_vertex(g, s) || !has_vertex(g, d)
         return false
@@ -70,6 +70,6 @@ end
 
 ## Other utilities
 
-function Graphs.reverse(g::ManualDataDiGraph)
+function Graphs.reverse(g::ArrayDataDiGraph)
     error("Not implemented")
 end
