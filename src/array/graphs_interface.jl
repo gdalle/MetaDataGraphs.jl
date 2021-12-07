@@ -68,6 +68,21 @@ function Graphs.add_edge!(
     end
 end
 
+function Graphs.rem_edge!(
+    g::ArrayDataDiGraph, s::Integer, d::Integer
+)
+    if !has_edge(g, s, d)
+        return false
+    else
+        d_index = searchsortedfirst(g.fadjlist[s], d)
+        s_index = searchsortedfirst(g.badjlist[d], s)
+        g.ne -= 1
+        deleteat!(g.fadjlist[s], d_index)
+        deleteat!(g.badjlist[d], s_index)
+        deleteat!(g.edge_data[s], d_index)
+    end
+end
+
 ## Other utilities
 
 function Graphs.reverse(g::ArrayDataDiGraph)
