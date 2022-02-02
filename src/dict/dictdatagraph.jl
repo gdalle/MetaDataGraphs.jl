@@ -11,8 +11,8 @@ Structure for graphs with metadata based on an underlying dataless graph.
 - `edge_data::Dict{Tuple{T,T},ED}`: list of edge data objects, indexed by integer tuples `(s,d)`
 - `graph_data::GD`: single graph data object
 """
-Base.@kwdef mutable struct DictDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
-                           AbstractDataGraph{T,VL,VD,ED,GD}
+mutable struct DictDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
+               AbstractDataGraph{T,VL,VD,ED,GD}
     graph::G
     labels::Vector{VL}
     vertices::Dict{VL,T}
@@ -22,21 +22,14 @@ Base.@kwdef mutable struct DictDataGraph{T,G<:AbstractGraph{T},VL,VD,ED,GD} <:
 end
 
 function DictDataGraph(
-    graph::AbstractGraph{T}; VL, VD=Nothing, ED=Nothing, graph_data=nothing
-) where {T}
-    @assert nv(graph) == 0
-    if VL <: Integer
-        error("Using integers as vertex labels for a DataGraph is not allowed.")
-    else
-        return DictDataGraph(;
-            graph=graph,
-            labels=VL[],
-            vertices=Dict{VL,T}(),
-            vertex_data=VD[],
-            edge_data=Dict{Tuple{T,T},ED}(),
-            graph_data=graph_data,
-        )
-    end
+    ::Type{G}; VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing
+) where {T,G<:AbstractGraph{T}}
+    graph = zero(G)
+    labels = VL[]
+    vertices = Dict{VL,T}()
+    vertex_data = VD[]
+    edge_data = Dict{Tuple{T,T},ED}()
+    return DictDataGraph(graph, labels, vertices, vertex_data, edge_data, graph_data)
 end
 
 ## Link between vertices and labels

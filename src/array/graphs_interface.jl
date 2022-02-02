@@ -99,15 +99,15 @@ function Graphs.reverse(g::ArrayDataDiGraph)
         ] for d in vertices(g)
     ]
     rev_graph_data = deepcopy(g.graph_data)
-    rev_g = ArrayDataDiGraph(;
-        ne=rev_ne,
-        fadjlist=rev_fadjlist,
-        badjlist=rev_badjlist,
-        labels=rev_labels,
-        vertices=rev_vertices,
-        vertex_data=rev_vertex_data,
-        edge_data=rev_edge_data,
-        graph_data=rev_graph_data,
+    rev_g = ArrayDataDiGraph(
+        rev_ne,
+        rev_fadjlist,
+        rev_badjlist,
+        rev_labels,
+        rev_vertices,
+        rev_vertex_data,
+        rev_edge_data,
+        rev_graph_data,
     )
     return rev_g
 end

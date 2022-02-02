@@ -67,9 +67,9 @@ function test_graph(g)
 end
 
 @testset "Dict storage" begin
-    g1 = DictDataGraph(Graph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+    g1 = DictDataGraph(SimpleGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g1)
-    g2 = DictDataGraph(DiGraph(); VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+    g2 = DictDataGraph(SimpleDiGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g2)
 end
 @testset "Array storage" begin

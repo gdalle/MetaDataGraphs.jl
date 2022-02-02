@@ -19,7 +19,7 @@ Graphs.is_directed(g::DictDataGraph) = is_directed(g.graph)
 Graphs.is_directed(::Type{<:DictDataGraph{T,G}}) where {T,G} = is_directed(G)
 
 function Base.zero(g::DictDataGraph{T,G,VL,VD,ED}) where {T,G,VL,VD,ED}
-    return DictDataGraph(G(); VL=VL, VD=VD, ED=ED, graph_data=get_data(g))
+    return DictDataGraph(G; VL=VL, VD=VD, ED=ED, graph_data=get_data(g))
 end
 
 ## Add vertices and edges
@@ -59,13 +59,13 @@ function Graphs.reverse(g::DictDataGraph)
     rev_vertex_data = deepcopy(g.vertex_data)
     rev_edge_data = Dict((d, s) => deepcopy(data) for ((s, d), data) in g.edge_data)
     rev_graph_data = deepcopy(g.graph_data)
-    rev_g = DictDataGraph(;
-        graph=rev_graph,
-        labels=rev_labels,
-        vertices=rev_vertices,
-        vertex_data=rev_vertex_data,
-        edge_data=rev_edge_data,
-        graph_data=rev_graph_data,
+    rev_g = DictDataGraph(
+        rev_graph,
+        rev_labels,
+        rev_vertices,
+        rev_vertex_data,
+        rev_edge_data,
+        rev_graph_data,
     )
     return rev_g
 end

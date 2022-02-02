@@ -13,8 +13,7 @@ Structure for graphs with metadata based on adjacency list storage.
 - `edge_data::Vector{Vector{ED}}`: list of edge data objects, indexed by `s` first and `d_index` second, where `d_index` is the rank of `d` among the outneighbors of `s`
 - `graph_data::GD`: single graph data object
 """
-Base.@kwdef mutable struct ArrayDataDiGraph{T<:Integer,VL,VD,ED,GD} <:
-                           AbstractDataGraph{T,VL,VD,ED,GD}
+mutable struct ArrayDataDiGraph{T<:Integer,VL,VD,ED,GD} <: AbstractDataGraph{T,VL,VD,ED,GD}
     ne::Int
     fadjlist::Vector{Vector{T}}
     badjlist::Vector{Vector{T}}
@@ -25,21 +24,19 @@ Base.@kwdef mutable struct ArrayDataDiGraph{T<:Integer,VL,VD,ED,GD} <:
     graph_data::GD
 end
 
-function ArrayDataDiGraph{T}(; VL, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
-    if VL <: Integer
-        error("Using integers as vertex labels for a DataGraph is not allowed.")
-    else
-        return ArrayDataDiGraph(;
-            ne=0,
-            fadjlist=Vector{T}[],
-            badjlist=Vector{T}[],
-            labels=VL[],
-            vertices=Dict{VL,T}(),
-            vertex_data=VD[],
-            edge_data=Vector{ED}[],
-            graph_data=graph_data,
-        )
-    end
+function ArrayDataDiGraph{T}(;
+    VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing
+) where {T}
+    ne = 0
+    fadjlist = Vector{T}[]
+    badjlist = Vector{T}[]
+    labels = VL[]
+    vertices = Dict{VL,T}()
+    vertex_data = VD[]
+    edge_data = Vector{ED}[]
+    return ArrayDataDiGraph(
+        ne, fadjlist, badjlist, labels, vertices, vertex_data, edge_data, graph_data
+    )
 end
 
 ## Link between vertices and labels
