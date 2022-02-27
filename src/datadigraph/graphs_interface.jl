@@ -1,37 +1,33 @@
 ## Basic Graphs.jl functions
 
-Graphs.edgetype(g::ArrayDataDiGraph{T}) where {T} = Edge{T}
+Graphs.edgetype(g::DataDiGraph{T}) where {T} = Edge{T}
 
-Graphs.nv(g::ArrayDataDiGraph) = length(g.fadjlist)
-Graphs.ne(g::ArrayDataDiGraph) = g.ne
+Graphs.nv(g::DataDiGraph) = length(g.fadjlist)
+Graphs.ne(g::DataDiGraph) = g.ne
 
-Graphs.vertices(g::ArrayDataDiGraph) = 1:nv(g)
+Graphs.vertices(g::DataDiGraph) = 1:nv(g)
 
-function Graphs.edges(g::ArrayDataDiGraph)
+function Graphs.edges(g::DataDiGraph)
     # TODO: avoid allocations with iterator
     return collect(Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
 end
 
-Graphs.has_vertex(g::ArrayDataDiGraph, v::Integer) = v in vertices(g)
+Graphs.has_vertex(g::DataDiGraph, v::Integer) = v in vertices(g)
 
-function Graphs.has_edge(g::ArrayDataDiGraph, s::Integer, d::Integer)
+function Graphs.has_edge(g::DataDiGraph, s::Integer, d::Integer)
     return (has_vertex(g, s) && has_vertex(g, d) && insorted(d, outneighbors(g, s)))
 end
 
-Graphs.inneighbors(g::ArrayDataDiGraph, v::Integer) = g.badjlist[v]
-Graphs.outneighbors(g::ArrayDataDiGraph, v::Integer) = g.fadjlist[v]
+Graphs.inneighbors(g::DataDiGraph, v::Integer) = g.badjlist[v]
+Graphs.outneighbors(g::DataDiGraph, v::Integer) = g.fadjlist[v]
 
-Graphs.is_directed(g::ArrayDataDiGraph) = true
-Graphs.is_directed(::Type{<:ArrayDataDiGraph}) = true
-
-function Base.zero(g::ArrayDataDiGraph{T,VL,VD,ED}) where {T,VL,VD,ED}
-    return ArrayDataDiGraph{T}(; VL=VL, VD=VD, ED=ED, graph_data=get_data(g))
-end
+Graphs.is_directed(g::DataDiGraph) = true
+Graphs.is_directed(::Type{<:DataDiGraph}) = true
 
 ## Add vertices and edges
 
 function Graphs.add_vertex!(
-    g::ArrayDataDiGraph{T,VL,VD,ED}, label::VL, data::VD
+    g::DataDiGraph{T,VL,VD,ED}, label::VL, data::VD
 ) where {T,VL,VD,ED}
     if haskey(g, label)
         return false
@@ -46,8 +42,14 @@ function Graphs.add_vertex!(
     end
 end
 
+function Graphs.add_vertex!(
+    g::DataDiGraph{T,VL,VD,ED}, label::VL
+) where {T,VL,VD<:Nothing,ED}
+    return add_vertex!(g, label, nothing)
+end
+
 function Graphs.add_edge!(
-    g::ArrayDataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
+    g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
 ) where {T,VL,VD,ED}
     if !has_vertex(g, s) || !has_vertex(g, d)
         return false
@@ -68,9 +70,13 @@ function Graphs.add_edge!(
     end
 end
 
-function Graphs.rem_edge!(
-    g::ArrayDataDiGraph, s::Integer, d::Integer
-)
+function Graphs.add_edge!(
+    g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer
+) where {T,VL,VD,ED<:Nothing}
+    return add_edge!(g, s, d, nothing)
+end
+
+function Graphs.rem_edge!(g::DataDiGraph, s::Integer, d::Integer)
     if !has_edge(g, s, d)
         return false
     else
@@ -85,7 +91,7 @@ end
 
 ## Other utilities
 
-function Graphs.reverse(g::ArrayDataDiGraph)
+function Graphs.reverse(g::DataDiGraph)
     rev_ne = g.ne
     rev_fadjlist = deepcopy(g.badjlist)
     rev_badjlist = deepcopy(g.fadjlist)
@@ -99,7 +105,7 @@ function Graphs.reverse(g::ArrayDataDiGraph)
         ] for d in vertices(g)
     ]
     rev_graph_data = deepcopy(g.graph_data)
-    rev_g = ArrayDataDiGraph(
+    rev_g = DataDiGraph(
         rev_ne,
         rev_fadjlist,
         rev_badjlist,

@@ -18,7 +18,6 @@ function test_graph(g)
     @test edgetype(g) == Graphs.SimpleGraphs.SimpleEdge{Int64}
     @test_opt edgetype(g)
 
-    @test (nv(zero(g)), ne(zero(g))) == (0, 0)
     @test (nv(g), ne(g)) == (5, 4)
     @test vertices(g) == Base.OneTo(5)
     # collect(edges(g))
@@ -78,20 +77,8 @@ function test_graph(g)
     end
 end
 
-@testset "Dict storage - undirected" begin
-    @test_opt DictDataGraph(SimpleGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    g1 = DictDataGraph(SimpleGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    test_graph(g1)
-end
-
-@testset "Dict storage - directed" begin
-    @test_opt DictDataGraph(SimpleDiGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    g2 = DictDataGraph(SimpleDiGraph{Int}; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    test_graph(g2)
-end
-
 @testset "Array storage - directed" begin
-    @test_opt ArrayDataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    g3 = ArrayDataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+    @test_opt DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+    g3 = DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
     test_graph(g3)
 end

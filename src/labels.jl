@@ -26,3 +26,9 @@ function Graphs.add_edge!(
     s, d = get_vertex(g, label_s), get_vertex(g, label_d)
     return add_edge!(g, s, d, data)
 end
+
+function Graphs.add_edge!(
+    g::AbstractDataGraph{T,VL,VD,ED}, label_s::VL, label_d::VL
+) where {T,VL,VD,ED<:Nothing}
+    return add_edge!(g, label_s, label_d, nothing)
+end
