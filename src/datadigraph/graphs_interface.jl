@@ -42,12 +42,6 @@ function Graphs.add_vertex!(
     end
 end
 
-function Graphs.add_vertex!(
-    g::DataDiGraph{T,VL,VD,ED}, label::VL
-) where {T,VL,VD<:Nothing,ED}
-    return add_vertex!(g, label, nothing)
-end
-
 function Graphs.add_edge!(
     g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
 ) where {T,VL,VD,ED}
@@ -68,12 +62,6 @@ function Graphs.add_edge!(
             return true
         end
     end
-end
-
-function Graphs.add_edge!(
-    g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer
-) where {T,VL,VD,ED<:Nothing}
-    return add_edge!(g, s, d, nothing)
 end
 
 function Graphs.rem_edge!(g::DataDiGraph, s::Integer, d::Integer)

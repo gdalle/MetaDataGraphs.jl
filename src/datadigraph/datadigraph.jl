@@ -24,9 +24,7 @@ mutable struct DataDiGraph{T<:Integer,VL,VD,ED,GD} <: AbstractDataGraph{T,VL,VD,
     graph_data::GD
 end
 
-function DataDiGraph{T}(;
-    VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing
-) where {T}
+function DataDiGraph{T}(; VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
     ne = 0
     fadjlist = Vector{T}[]
     badjlist = Vector{T}[]
@@ -46,3 +44,11 @@ get_label(g::DataDiGraph, v::Integer) = g.labels[v]
 
 Base.haskey(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)
 Base.getindex(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = get_vertex(g, label)
+
+function Graphs.has_vertex(g::DataDiGraph{T,VL}, label::VL) where {T,VL}
+    return haskey(g, label)
+end
+
+function Graphs.has_edge(g::DataDiGraph{T,VL}, label_s::VL, label_d::VL) where {T,VL}
+    return haskey(g, label_s) && haskey(g, label_d) && has_edge(g, g[label_s], g[label_d])
+end
