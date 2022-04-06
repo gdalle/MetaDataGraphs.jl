@@ -20,7 +20,7 @@ function test_graph(g)
 
     @test (nv(g), ne(g)) == (5, 4)
     @test vertices(g) == Base.OneTo(5)
-    # collect(edges(g))
+    @test length(collect(edges(g))) == ne(g)
 
     @test has_vertex(g, 2)
     @test !has_vertex(g, 6)
@@ -77,8 +77,6 @@ function test_graph(g)
     end
 end
 
-@testset "Array storage - directed" begin
-    @test_opt DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    g3 = DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-    test_graph(g3)
-end
+@test_opt DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+g = DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
+test_graph(g)

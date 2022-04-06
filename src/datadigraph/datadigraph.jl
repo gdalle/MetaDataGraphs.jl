@@ -24,6 +24,11 @@ mutable struct DataDiGraph{T<:Integer,VL,VD,ED,GD} <: AbstractDataGraph{T,VL,VD,
     graph_data::GD
 end
 
+"""
+    DataDiGraph{T}(VL, VD, ED, graph_data)
+
+Constructor taking only label and data types to create an empty [`DataDiGraph`](@ref).
+"""
 function DataDiGraph{T}(; VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
     ne = 0
     fadjlist = Vector{T}[]
@@ -39,16 +44,23 @@ end
 
 ## Link between vertices and labels
 
-get_vertex(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = g.vertices[label]
-get_label(g::DataDiGraph, v::Integer) = g.labels[v]
+"""
+    haskey(g, label)
 
+Check whether a vertex with label `label` exists.
+"""
 Base.haskey(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)
-Base.getindex(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = get_vertex(g, label)
 
-function Graphs.has_vertex(g::DataDiGraph{T,VL}, label::VL) where {T,VL}
-    return haskey(g, label)
-end
+"""
+    get_vertex(g, label)
 
-function Graphs.has_edge(g::DataDiGraph{T,VL}, label_s::VL, label_d::VL) where {T,VL}
-    return haskey(g, label_s) && haskey(g, label_d) && has_edge(g, g[label_s], g[label_d])
-end
+Retrieve the vertex associated with label `label.
+"""
+get_vertex(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = g.vertices[label]
+
+"""
+    get_label(g, v)
+
+Retrieve the label associated with vertex `v`.
+"""
+get_label(g::DataDiGraph, v::Integer) = g.labels[v]

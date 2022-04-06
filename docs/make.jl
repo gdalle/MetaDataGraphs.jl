@@ -15,7 +15,10 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "API reference" => "api.md"
+        "API reference" => [
+            "AbstractDataGraph" => "api_abstract.md",
+            "DataDiGraph" => "api_datadigraph.md",
+        ],
     ],
 )
 

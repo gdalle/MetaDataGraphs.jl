@@ -14,6 +14,15 @@ function get_edgeweight(
     return get_data(g, s, d).weight
 end
 
+@doc raw"""
+    weights(g)
+
+Compute the edge weights for an [`AbstractDataGraph`](@ref).
+
+- If the edge data is of type `ED = Nothing`, return a lazy matrix full of ones.
+- If the edge data is of type `ED <: Real`, fill a sparse matrix with it.
+- If the edge data is of another type `ED`, try to use the attribute `edge_data.weight` for each edge.
+"""
 function Graphs.weights(g::AbstractDataGraph{T}) where {T}
     n = nv(g)
     eds = edges(g)

@@ -4,9 +4,10 @@ CurrentModule = DataGraphs
 
 # DataGraphs.jl
 
-Welcome to the documentation for [DataGraphs.jl](https://github.com/gdalle/DataGraphs.jl).
+Welcome to the documentation of [DataGraphs.jl](https://github.com/gdalle/DataGraphs.jl).
 
-DataGraphs.jl deals with graphs whose vertices or edges have associated metadata. In addition, vertices are allowed to have a "label" of arbitrary type, instead of the integer labels imposed by Graphs.jl.
+This packages provides a [Graphs.jl](https://github.com/JuliaGraphs/Graphs.jl)-compatible format for graphs whose vertices or edges have associated metadata.
+In addition, vertices are allowed to have a "label" of arbitrary non-integer type, instead of the integer labels imposed by Graphs.jl.
 
 Our main inspiration is [MetaGraphsNext.jl](https://github.com/JuliaGraphs/MetaGraphsNext.jl), but we made slightly different design choices.
 

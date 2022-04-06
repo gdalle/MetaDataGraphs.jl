@@ -1,7 +1,7 @@
 """
     AbstractDataGraph{T,VL,VD,ED,GD} <: AbstractGraph{T}
 
-General template for graphs with metadata. Here,
+General template for graphs with metadata.
 
 - `T<:Integer` is the type of vertices
 - `VL` is the type of vertex labels (cannot be a subtype of `Integer`)
@@ -20,5 +20,3 @@ function Base.show(io::IO, g::AbstractDataGraph{T,VL,VD,ED,GD}) where {T,VL,VD,E
         "DataGraph of size ($n, $m) with vertex labels of type $VL, vertex data of type $VD, edge data of type $ED and graph data of type $GD.",
     )
 end
-
-Base.eltype(::AbstractDataGraph{T}) where {T} = T

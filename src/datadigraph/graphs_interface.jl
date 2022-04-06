@@ -1,6 +1,6 @@
 ## Basic Graphs.jl functions
 
-Graphs.edgetype(g::DataDiGraph{T}) where {T} = Edge{T}
+Graphs.edgetype(::DataDiGraph{T}) where {T} = Edge{T}
 
 Graphs.nv(g::DataDiGraph) = length(g.fadjlist)
 Graphs.ne(g::DataDiGraph) = g.ne
@@ -8,8 +8,7 @@ Graphs.ne(g::DataDiGraph) = g.ne
 Graphs.vertices(g::DataDiGraph) = 1:nv(g)
 
 function Graphs.edges(g::DataDiGraph)
-    # TODO: avoid allocations with iterator
-    return collect(Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
+    return (Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
 end
 
 Graphs.has_vertex(g::DataDiGraph, v::Integer) = v in vertices(g)
@@ -26,6 +25,11 @@ Graphs.is_directed(::Type{<:DataDiGraph}) = true
 
 ## Add vertices and edges
 
+"""
+    add_vertex!(g::DataDiGraph, label, data)
+
+Add a vertex to `g` by specifying its `label` along with the associated `data`.
+"""
 function Graphs.add_vertex!(
     g::DataDiGraph{T,VL,VD,ED}, label::VL, data::VD
 ) where {T,VL,VD,ED}
@@ -42,6 +46,11 @@ function Graphs.add_vertex!(
     end
 end
 
+"""
+    add_edge!(g::DataDiGraph, s, d, data)
+
+Add an edge to `g` by specifying the vertices `s` and `d` along with the associated `data`.
+"""
 function Graphs.add_edge!(
     g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
 ) where {T,VL,VD,ED}
