@@ -61,6 +61,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using DataGraphs
-            DocMeta.setdocmeta!(DataGraphs, :DocTestSetup, :(using DataGraphs); recursive=true)
-            doctest(DataGraphs)'
+            using MetaDataGraphs
+            DocMeta.setdocmeta!(MetaDataGraphs, :DocTestSetup, :(using MetaDataGraphs); recursive=true)
+            doctest(MetaDataGraphs)'
