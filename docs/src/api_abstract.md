@@ -3,34 +3,34 @@
 ## Type
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["abstract/abstractdatagraph.jl"]
 ```
 
 ## Graphs.jl interface
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["abstract/graphs_interface.jl"]
 ```
 
 ## Metadata handling
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["abstract/data.jl"]
 ```
 
 ## Edge weights
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["abstract/weights.jl"]
 ```
 
 ## Dict behavior
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["abstract/dict.jl"]
 ```

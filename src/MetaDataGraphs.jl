@@ -1,4 +1,4 @@
-module DataGraphs
+module MetaDataGraphs
 
 using Graphs
 using SparseArrays
@@ -16,6 +16,5 @@ include("abstract/dict.jl")
 include("datadigraph/datadigraph.jl")
 include("datadigraph/data.jl")
 include("datadigraph/graphs_interface.jl")
-
 
 end

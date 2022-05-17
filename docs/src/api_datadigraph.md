@@ -3,7 +3,7 @@
 ## Type
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Order = [:type]
 Pages = ["datadigraph/datadigraph.jl"]
 ```
@@ -11,7 +11,7 @@ Pages = ["datadigraph/datadigraph.jl"]
 ## Basic access
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Order = [:function]
 Pages = ["datadigraph/datadigraph.jl"]
 ```
@@ -19,13 +19,13 @@ Pages = ["datadigraph/datadigraph.jl"]
 ## Graphs.jl interface
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["datadigraph/graphs_interface.jl"]
 ```
 
 ## Metadata handling
 
 ```@autodocs
-Modules = [DataGraphs]
+Modules = [MetaDataGraphs]
 Pages = ["datadigraph/data.jl"]
 ```

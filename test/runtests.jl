@@ -1,19 +1,19 @@
 using Aqua
-using DataGraphs
+using MetaDataGraphs
 using Documenter
 using Graphs
 using JET
 using LinearAlgebra
 using Test
 
-DocMeta.setdocmeta!(DataGraphs, :DocTestSetup, :(using DataGraphs); recursive=true)
+DocMeta.setdocmeta!(MetaDataGraphs, :DocTestSetup, :(using MetaDataGraphs); recursive=true)
 
-@testset verbose = true "DataGraphs.jl" begin
+@testset verbose = true "MetaDataGraphs.jl" begin
     @testset verbose = true "Doctests" begin
-        doctest(DataGraphs)
+        doctest(MetaDataGraphs)
     end
     @testset verbose = true "Code quality" begin
-        Aqua.test_all(DataGraphs)
+        Aqua.test_all(MetaDataGraphs)
     end
     @testset verbose = true "Structure" begin
         include("structure.jl")
