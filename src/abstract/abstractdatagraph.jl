@@ -20,3 +20,43 @@ function Base.show(io::IO, g::AbstractDataGraph{T,VL,VD,ED,GD}) where {T,VL,VD,E
         "DataGraph of size ($n, $m) with vertex labels of type $VL, vertex data of type $VD, edge data of type $ED and graph data of type $GD.",
     )
 end
+
+## Vertex-label translation
+
+"""
+    get_vertex(g, label)
+
+Retrieve the vertex associated with label `label.
+"""
+function get_vertex(g::AbstractDataGraph{T,VL}, label::VL) where {T,VL}
+    return error("Not implemented for $(typeof(g))")
+end
+
+"""
+    get_label(g, v)
+
+Retrieve the label associated with vertex `v`.
+"""
+function get_label(g::AbstractDataGraph, v::Integer)
+    return error("Not implemented for $(typeof(g))")
+end
+
+## Dict behavior
+
+"""
+    haskey(g, label)
+
+Check whether a vertex with label `label` exists.
+"""
+function Base.haskey(g::AbstractDataGraph{T,VL}, label::VL) where {T,VL}
+    return error("Not implemented for $(typeof(g))")
+end
+
+"""
+    getindex(g, label)
+
+Alias for [`get_vertex(g, label)`](@ref), intended for dictionary-like use.
+"""
+function Base.getindex(g::AbstractDataGraph{T,VL}, label::VL) where {T,VL}
+    return get_vertex(g, label)
+end

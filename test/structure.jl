@@ -76,7 +76,3 @@ function test_graph(g)
         @test_opt reverse(g)
     end
 end
-
-@test_opt DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-g = DataDiGraph{Int}(; VL=Symbol, VD=Tuple{Float64,Float64}, ED=Int64)
-test_graph(g)

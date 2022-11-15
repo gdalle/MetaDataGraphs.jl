@@ -1,7 +1,7 @@
 name = "MetaDataGraphs"
 uuid = "886fa1cc-5380-4008-8113-0516998d4847"
 authors = ["Guillaume Dalle <22795598+gdalle@users.noreply.github.com> and contributors"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
@@ -9,4 +9,4 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
 Graphs = "1.6"
-julia = "1.7"
+julia = "1.8"

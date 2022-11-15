@@ -1,6 +1,25 @@
-Base.eltype(::AbstractDataGraph{T}) where {T} = T
+## Basic Graphs.jl functions
 
-## Edge access
+Base.eltype(::AbstractDataGraph{T}) where {T} = T
+Graphs.edgetype(::AbstractDataGraph{T}) where {T} = Edge{T}
+
+function Graphs.vertices(g::AbstractDataGraph)
+    return 1:nv(g)
+end
+
+function Graphs.has_vertex(g::AbstractDataGraph, v::Integer)
+    return v in vertices(g)
+end
+
+function Graphs.edges(g::AbstractDataGraph)
+    return (Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
+end
+
+function Graphs.has_edge(g::AbstractDataGraph, s::Integer, d::Integer)
+    return (has_vertex(g, s) && has_vertex(g, d) && insorted(d, outneighbors(g, s)))
+end
+
+## Label-based access
 
 """
     has_vertex(g, label)
@@ -18,20 +37,29 @@ Check whether an edge exists between the vertices with labels `label_s` and `lab
 """
 function Graphs.has_edge(g::AbstractDataGraph{T,VL}, label_s::VL, label_d::VL) where {T,VL}
     if has_vertex(g, label_s) && has_vertex(g, label_d)
-        s = get_vertex(g, label_s)
-        d = get_vertex(g, label_d)
+        s, d = get_vertex(g, label_s), get_vertex(g, label_d)
         return has_edge(g, s, d)
     else
         return false
     end
 end
 
-## Vertex and edge modification
+## Label-based modification
 
 """
-    add_edge!(g::DataDiGraph, label_s, label_d, data)
+    rem_vertex!(g, label)
 
-Add an edge to `g` by specifying the labels `label_s` and `label_d` of both vertices, along with the associated `data`.
+Remove the vertex with label `label` if it exists.
+"""
+function Graphs.rem_vertex!(g::AbstractDataGraph{T,VL}, label::VL) where {T,VL}
+    v = get_vertex(g, label)
+    return rem_vertex!(g, v)
+end
+
+"""
+    add_edge!(g, label_s, label_d, data)
+
+Add an edge between the vertices with labels `label_s` and `label_d`, along with the associated `data`.
 """
 function Graphs.add_edge!(
     g::AbstractDataGraph{T,VL,VD,ED}, label_s::VL, label_d::VL, data::ED
@@ -41,34 +69,13 @@ function Graphs.add_edge!(
 end
 
 """
-    add_vertex!(g, label)
+    rem_edge!(g, label_s, label_d)
 
-Shortcut for `add_vertex(g, label, nothing)`, to use in graphs where vertices have no metadata.
+Remove the edge between the vertices with labels `label_s` and `label_d` if it exists.
 """
-function Graphs.add_vertex!(
-    g::AbstractDataGraph{T,VL,VD,ED}, label::VL
-) where {T,VL,VD<:Nothing,ED}
-    return add_vertex!(g, label, nothing)
-end
-
-"""
-    add_edge!(g, s, d)
-
-Shortcut for `add_edge!(g, s, d, nothing)`, to use in graphs where edges have no metadata.
-"""
-function Graphs.add_edge!(
-    g::AbstractDataGraph{T,VL,VD,ED}, s::Integer, d::Integer
-) where {T,VL,VD,ED<:Nothing}
-    return add_edge!(g, s, d, nothing)
-end
-
-"""
-    add_edge!(g, label_s, label_d)
-
-Shortcut for `add_edge!(g, label_s, label_d, nothing)`, to use in graphs where edges have no metadata.
-"""
-function Graphs.add_edge!(
-    g::AbstractDataGraph{T,VL,VD,ED}, label_s::VL, label_d::VL
-) where {T,VL,VD,ED<:Nothing}
-    return add_edge!(g, label_s, label_d, nothing)
+function Graphs.rem_edge!(
+    g::AbstractDataGraph{T,VL,VD}, label_s::VL, label_d::VL
+) where {T,VL,VD}
+    s, d = get_vertex(g, label_s), get_vertex(g, label_d)
+    return rem_edge!(g, s, d)
 end

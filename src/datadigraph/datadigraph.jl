@@ -15,21 +15,21 @@ Structure for graphs with metadata based on adjacency list storage.
 """
 mutable struct DataDiGraph{T<:Integer,VL,VD,ED,GD} <: AbstractDataGraph{T,VL,VD,ED,GD}
     ne::Int
-    fadjlist::Vector{Vector{T}}
-    badjlist::Vector{Vector{T}}
-    labels::Vector{VL}
-    vertices::Dict{VL,T}
-    vertex_data::Vector{VD}
-    edge_data::Vector{Vector{ED}}
+    const fadjlist::Vector{Vector{T}}
+    const badjlist::Vector{Vector{T}}
+    const labels::Vector{VL}
+    const vertices::Dict{VL,T}
+    const vertex_data::Vector{VD}
+    const edge_data::Vector{Vector{ED}}
     graph_data::GD
 end
 
 """
-    DataDiGraph{T}(VL, VD, ED, graph_data)
+    DataDiGraph{T,VL,VD,ED}(graph_data)
 
 Constructor taking only label and data types to create an empty [`DataDiGraph`](@ref).
 """
-function DataDiGraph{T}(; VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing) where {T}
+function DataDiGraph{T,VL,VD,ED}(graph_data::GD=nothing) where {T,VL,VD,ED,GD}
     ne = 0
     fadjlist = Vector{T}[]
     badjlist = Vector{T}[]
@@ -42,25 +42,12 @@ function DataDiGraph{T}(; VL=Symbol, VD=Nothing, ED=Nothing, graph_data=nothing)
     )
 end
 
-## Link between vertices and labels
+## Vertex-label translation
 
-"""
-    haskey(g, label)
-
-Check whether a vertex with label `label` exists.
-"""
-Base.haskey(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)
-
-"""
-    get_vertex(g, label)
-
-Retrieve the vertex associated with label `label.
-"""
 get_vertex(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = g.vertices[label]
 
-"""
-    get_label(g, v)
-
-Retrieve the label associated with vertex `v`.
-"""
 get_label(g::DataDiGraph, v::Integer) = g.labels[v]
+
+## Dict behavior
+
+Base.haskey(g::DataDiGraph{T,VL}, label::VL) where {T,VL} = haskey(g.vertices, label)

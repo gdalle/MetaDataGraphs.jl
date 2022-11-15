@@ -14,16 +14,7 @@ makedocs(;
         assets=String[],
         edit_branch="main",
     ),
-    pages=[
-        "Home" => "index.md",
-        "API reference" => [
-            "AbstractDataGraph" => "api_abstract.md",
-            "DataDiGraph" => "api_datadigraph.md",
-        ],
-    ],
+    pages=["Home" => "index.md", "API reference" => "api.md"],
 )
 
-deploydocs(;
-    repo="github.com/gdalle/MetaDataGraphs.jl",
-    devbranch="main",
-)
+deploydocs(; repo="github.com/gdalle/MetaDataGraphs.jl", devbranch="main")

@@ -1,34 +1,20 @@
 ## Basic Graphs.jl functions
 
-Graphs.edgetype(::DataDiGraph{T}) where {T} = Edge{T}
+Graphs.is_directed(g::DataDiGraph) = true
+Graphs.is_directed(::Type{<:DataDiGraph}) = true
 
 Graphs.nv(g::DataDiGraph) = length(g.fadjlist)
 Graphs.ne(g::DataDiGraph) = g.ne
 
-Graphs.vertices(g::DataDiGraph) = 1:nv(g)
-
-function Graphs.edges(g::DataDiGraph)
-    return (Edge(u, v) for u in vertices(g) for v in outneighbors(g, u))
-end
-
-Graphs.has_vertex(g::DataDiGraph, v::Integer) = v in vertices(g)
-
-function Graphs.has_edge(g::DataDiGraph, s::Integer, d::Integer)
-    return (has_vertex(g, s) && has_vertex(g, d) && insorted(d, outneighbors(g, s)))
-end
-
 Graphs.inneighbors(g::DataDiGraph, v::Integer) = g.badjlist[v]
 Graphs.outneighbors(g::DataDiGraph, v::Integer) = g.fadjlist[v]
 
-Graphs.is_directed(g::DataDiGraph) = true
-Graphs.is_directed(::Type{<:DataDiGraph}) = true
-
-## Add vertices and edges
+## Index-based modification
 
 """
     add_vertex!(g::DataDiGraph, label, data)
 
-Add a vertex to `g` by specifying its `label` along with the associated `data`.
+Add a vertex with label `label`, along with the associated `data`.
 """
 function Graphs.add_vertex!(
     g::DataDiGraph{T,VL,VD,ED}, label::VL, data::VD
@@ -36,10 +22,11 @@ function Graphs.add_vertex!(
     if haskey(g, label)
         return false
     else
+        n = nv(g)
         push!(g.fadjlist, T[])
         push!(g.badjlist, T[])
         push!(g.labels, label)
-        g.vertices[label] = nv(g)
+        g.vertices[label] = n + 1
         push!(g.vertex_data, data)
         push!(g.edge_data, ED[])
         return true
@@ -49,40 +36,40 @@ end
 """
     add_edge!(g::DataDiGraph, s, d, data)
 
-Add an edge to `g` by specifying the vertices `s` and `d` along with the associated `data`.
+Add an edge between vertices `s` and `d`, along with the associated `data`.
 """
 function Graphs.add_edge!(
     g::DataDiGraph{T,VL,VD,ED}, s::Integer, d::Integer, data::ED
 ) where {T,VL,VD,ED}
-    if !has_vertex(g, s) || !has_vertex(g, d)
-        return false
-    else
+    if has_vertex(g, s) && has_vertex(g, d)
         flist = g.fadjlist[s]
         d_index = searchsortedfirst(flist, d)
-        if d_index <= length(flist) && flist[d_index] == d
+        if (1 <= d_index <= length(flist)) && (flist[d_index] == d)
             return false
         else
+            g.ne += 1
             blist = g.badjlist[d]
             s_index = searchsortedfirst(blist, s)
-            g.ne += 1
             insert!(flist, d_index, d)
             insert!(blist, s_index, s)
             insert!(g.edge_data[s], d_index, data)
             return true
         end
+    else
+        return false
     end
 end
 
 function Graphs.rem_edge!(g::DataDiGraph, s::Integer, d::Integer)
-    if !has_edge(g, s, d)
-        return false
-    else
+    if has_edge(g, s, d)
+        g.ne -= 1
         d_index = searchsortedfirst(g.fadjlist[s], d)
         s_index = searchsortedfirst(g.badjlist[d], s)
-        g.ne -= 1
         deleteat!(g.fadjlist[s], d_index)
         deleteat!(g.badjlist[d], s_index)
         deleteat!(g.edge_data[s], d_index)
+    else
+        return false
     end
 end
 

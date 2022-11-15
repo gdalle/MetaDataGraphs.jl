@@ -14,7 +14,7 @@ function get_edgeweight(
     return get_data(g, s, d).weight
 end
 
-@doc raw"""
+"""
     weights(g)
 
 Compute the edge weights for an [`AbstractDataGraph`](@ref).
