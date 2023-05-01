@@ -1,5 +1,7 @@
 # MetaDataGraphs.jl
 
+> This package is not actively maintained, please use [MetaGraphsNext.jl](https://github.com/JuliaGraphs/MetaGraphsNext.jl) instead!
+
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://gdalle.github.io/MetaDataGraphs.jl/dev/)
 [![Build Status](https://github.com/gdalle/MetaDataGraphs.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/gdalle/MetaDataGraphs.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/gdalle/MetaDataGraphs.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/gdalle/MetaDataGraphs.jl)
